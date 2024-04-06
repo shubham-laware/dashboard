@@ -401,50 +401,15 @@
 
           
           <ul class="navbar-nav  justify-content-end">
-            <li class="nav-item d-flex align-items-center  "  id="SignInLink">
+            <li class="nav-item d-flex align-items-center  "  >
               <a href="javascript:;" class="nav-link text-body font-weight-bold px-0 ">
                 <i class="fa fa-user me-sm-1"></i>
-                <span class="d-sm-inline d-none">Sign In</span>
+                <span class="d-sm-inline d-none" id="userName">User</span>
               </a>
             </li>
 
 
-            <!-- Shubham- Sign In modal starts here  -->
-
-            <div class="modal fade" id="signInModalDialog" tabindex="-1" aria-labelledby="signInModalLabel" aria-hidden="true">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="signInModalLabel">Sign In</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                    <!-- Sign-in form -->
-                    <form id="signInForm">
-                      <div class="mb-3">
-                        <label for="email" class="form-label">Email or Phone</label>
-                        <input type="email" class="form-control" id="email" placeholder="Enter email or phone">
-                      </div>
-                      <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" placeholder="Password">
-                      </div>
-                      <div class="d-flex flex-column">
-                        <button type="submit" class="btn btn-primary">Login</button>
-                        <div class="d-flex gap-2 " style="font-size: 14px;">
-                          <a href="#" class="forgot-password-link">Forgot Password ? </a>
-                          <a href="/register" class="forgot-password-link">Create an Account !</a>
-                        </div>
-                       
-                      </div>
-                     
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Sign In modal ends here -->
+           
             <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
                 <div class="sidenav-toggler-inner">
@@ -1298,6 +1263,7 @@
 
 
   </script>
+  <script src="../assets/js/manufacture.js"></script>
 
 </body>
 
