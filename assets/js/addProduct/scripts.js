@@ -168,10 +168,8 @@ function openEditModal(ID) {
       if (data.status === false) {
         console.log(data.message);
       } else {
-        const product = data.data.find(
-          (product) => product.id === ID
-        );
-        console.log("PRODUCT:",product)
+        const product = data.data.find((product) => product.id === ID);
+        console.log("PRODUCT:", product);
         editProductModal._element.dataset.product = JSON.stringify(product);
 
         document.getElementById("typingResultCategoryEdit").innerText =
@@ -196,9 +194,8 @@ function openEditModal(ID) {
         document.getElementById("typingResultOffersEdit").innerText =
           product.offers + "%";
 
-
-          const newBadgeElement = document.getElementById("NewBadge");
-          console.log("NEW BADGE:",newBadgeElement)
+        const newBadgeElement = document.getElementById("NewBadge");
+        console.log("NEW BADGE:", newBadgeElement);
         const productDate =
           product.date instanceof Date ? product.date : new Date(product.date);
         const currentDate = new Date();
@@ -206,7 +203,7 @@ function openEditModal(ID) {
           currentDate.getTime() - productDate.getTime()
         );
         const daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
-        if (daysDifference <= 2) {
+        if (daysDifference <= 5) {
           newBadgeElement.style.display = "inline-block";
         } else {
           newBadgeElement.style.display = "none";
@@ -240,10 +237,14 @@ function openEditModal(ID) {
         defaultStock.selected = true;
         stockSelect.appendChild(defaultStock);
 
-        const stockRanges = ["1-5", "5-10", "10-15", "15-20"];
+        const stockRanges = ["1-5", "5-10", "10-15", "15-20", "None"];
         for (let range of stockRanges) {
           const stockOption = document.createElement("option");
-          stockOption.value = range;
+          if (range === "None") {
+            stockOption.value = "0";
+          } else {
+            stockOption.value = range;
+          }
           stockOption.textContent = range;
           stockSelect.appendChild(stockOption);
         }
@@ -258,11 +259,16 @@ function openEditModal(ID) {
         defaultOffer.selected = true;
         offerSelect.appendChild(defaultOffer);
 
-        const offerRanges = ["50-60%", "60-70%", "70-80%"];
+        const offerRanges = ["50-60", "60-70", "70-80", "None"]; // Numeric ranges without percentage symbols
         for (let range of offerRanges) {
           const offerOption = document.createElement("option");
-          offerOption.value = range;
-          offerOption.textContent = range;
+          if (range === "None") {
+            offerOption.value = "0"; // Set value to 0 for "None"
+            offerOption.textContent = range; // "None" without percentage symbol
+          } else {
+            offerOption.value = range;
+            offerOption.textContent = range + "%"; // Append percentage symbol for other options
+          }
           offerSelect.appendChild(offerOption);
         }
 
@@ -415,3 +421,31 @@ function SaveChanges() {
 function refreshPage() {
   location.reload(); // Reload the page to reflect the changes
 }
+
+
+
+
+
+
+
+
+
+
+
+
+// Shubham - Sign In functionality starts here
+document.addEventListener("DOMContentLoaded", function() {
+  // Your JavaScript code here
+  
+const signInLink = document.getElementById('SignInLink');
+console.log("SIGN IN ",signInLink)
+  const signInModal = new bootstrap.Modal(document.getElementById("signInModalDialog"));
+
+  // Add click event listener to the sign-in link
+  signInLink.addEventListener('click', function() {
+    console.log("CLICKED")
+    signInModal.show(); // Show the modal
+  });
+});
+
+

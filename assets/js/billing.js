@@ -10,84 +10,63 @@ let checkoutProducts = [];
 form.addEventListener("submit", function (event) {
   event.preventDefault();
   let product_codes = input.value?.trim();
-  
+
   if (product_codes === "") {
     return;
   }
 
-  // Split the input value by comma to get individual product codes
-  product_codes = product_codes.split(",").map(code => code.trim());
+  product_codes = product_codes.split(",").map((code) => code.trim());
 
   fetch(`https://minitgo.com/api/fetch_products.php`, {
     method: "GET",
   })
-  .then((response) => response.json())
-  .then((data) => {
-    const filteredProducts = data.data.filter(product => {
-      // Check if the product code is included in the array of product codes
-      return product_codes.includes(product.pcode);
-    });
-    console.log("Filtered products:", filteredProducts);
-    displayProducts(filteredProducts);
-  })
-  .catch((error) => console.error("Error:", error));
+    .then((response) => response.json())
+    .then((data) => {
+      const filteredProducts = data.data.filter((product) => {
+        return product_codes.includes(product.pcode);
+      });
+      displayProducts(filteredProducts);
+    })
+    .catch((error) => console.error("Error:", error));
 });
-
-
-
-// form.addEventListener("submit", function (event) {
-//   event.preventDefault();
-//   let product_codes = input.value?.trim();
-  
-//   if (product_codes === "") {
-//     return;
-//   }
-
-//   // Split the input value by comma to get individual product codes
-//   product_codes = product_codes.split(",").map(code => code.trim());
-//   fetch(`https://minitgo.com/api/fetch_products.php?pcode=${product_codes}`, {
-//     method: "GET",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//   })
-//   .then((response) => {
-//     console.log("RESPONSE:",response)
-//     return response.json()
-//   })
-//   .then((data) => {
-//     const filteredProducts = data.data.filter(product => {
-//       // Check if the product code is included in the array of product codes
-//       return product_codes.includes(product.pcode);
-//     });
-//     console.log("Filtered products:", filteredProducts);
-//     displayProducts(filteredProducts);
-//   })
-//   .catch((error) => console.error("Error:", error));
-// });
 
 function onAddToCheckout(productId) {
   fetch(`https://minitgo.com/api/fetch_products.php`, {
     method: "GET",
   })
-  .then((response) => response.json())
-  .then((data) => {
-    const products = data.data;
-    const productToAdd = products.find((product) => product.product_id === productId);
-    if (productToAdd) {
-      checkoutProducts.push(productToAdd);
-      console.log("Product added to checkout:", productToAdd);
-      updateCheckoutProductCount(); // Update the count of checkout products
-    } else {
-      console.log("Product not found");
-    }
-  })
-  .catch((error) => console.error("Error:", error));
+    .then((response) => response.json())
+    .then((data) => {
+      const products = data.data;
+      const productToAdd = products.find(
+        (product) => product.product_id === productId
+      );
+      if (productToAdd) {
+        const existingProductIndex = checkoutProducts.findIndex(
+          (product) => product.product_id === productId
+        );
+        if (existingProductIndex !== -1) {
+          checkoutProducts[existingProductIndex].quantity++;
+        } else {
+          productToAdd.quantity = 1;
+          checkoutProducts.push(productToAdd);
+        }
+        console.log("CHECKOUT PRODUCTS", checkoutProducts);
+        updateCheckoutProductCount(); 
+      } else {
+        console.log("Product not found");
+      }
+    })
+    .catch((error) => console.error("Error:", error));
 }
 
 function updateCheckoutProductCount() {
+  const totalQuantity = checkoutProducts.reduce(
+    (total, product) => total + product.quantity,
+    0
+  );
+
   items_section.innerHTML = `
-    <span>Bill Items ${checkoutProducts.length}</span>
+    <span>Bill Items ${totalQuantity}</span>
     <button
       class="btn btn-primary my-auto"
       data-bs-toggle="modal"
@@ -98,23 +77,149 @@ function updateCheckoutProductCount() {
   `;
 }
 
-console.log(checkoutProducts.length);
-
-// Get the quantity input field in the modal
 const quantityInput = document.getElementById("quantity");
 
-// Function to update the quantity input field value
 function updateQuantityField() {
   if (quantityInput) {
-    quantityInput.value = checkoutProducts.length; // Set the value to the number of checkout items
+    const totalQuantity = checkoutProducts.reduce(
+      (total, product) => total + product.quantity,
+      0
+    );
+    quantityInput.value = totalQuantity; 
+  }
+}
+function displayCheckoutProducts() {
+  const productCardsContainer = document.getElementById("productCards");
+  productCardsContainer.innerHTML = ""; 
+
+  checkoutProducts.forEach((product) => {
+    const productCard = document.createElement("div");
+    productCard.classList.add(
+      "form-group",
+      "border",
+      "rounded-2",
+      "px-2",
+      "d-flex",
+      "gap-3",
+      "align-items-center"
+    );
+    productCard.style.height = "120px";
+
+    productCard.innerHTML = `
+      <div style="width: 90px;height: 90px;" class=" border rounded-2">
+        <img src="${product.product_image1}" alt="Product Image" class="w-100 h-100">
+      </div>
+      <div class="w-100 d-flex  "style="height:90px ">
+        <div class="d-flex   w-100 justify-content-between align-items-center px-2 pt-1">
+          <div>
+            <div>Title: ${product.product_tittle}</div>
+            <div>Price: ${product.product_price}</div>
+            <button class="btn btn-danger px-2 py-1 mt-1" onclick="removeFromCheckout('${product.product_id}')">Delete</button>
+          </div>
+         
+         
+            <div class="d-flex border rounded-2">
+              <button class="border rounded-2 px-2"  style="font-size: 14px;" onclick="increaseQuantity('${product.product_id}')">+</button>
+              <div style="width: 50px;" class="d-flex align-items-center justify-content-center">${product.quantity}</div>
+              <button class="border rounded-2 px-2 "  style="font-size: 14px;" onclick="decreaseQuantity('${product.product_id}')">-</button>
+            </div>
+          
+
+        </div>
+      </div>
+    `;
+
+    productCardsContainer.appendChild(productCard);
+  });
+}
+
+function increaseQuantity(productId) {
+  const productIndex = checkoutProducts.findIndex(
+    (product) => product.product_id === productId
+  );
+  if (productIndex !== -1) {
+    checkoutProducts[productIndex].quantity++;
+    updateCheckoutProductCount();
+    updateQuantityField();
+    displayCheckoutProducts();
   }
 }
 
-// Event listener to execute the function when the modal is shown
-document.getElementById('billingModal').addEventListener('shown.bs.modal', function () {
-  updateQuantityField(); // Update the quantity field when the modal is shown
-});
+function decreaseQuantity(productId) {
+  const productIndex = checkoutProducts.findIndex(
+    (product) => product.product_id === productId
+  );
+  if (productIndex !== -1) {
+    if (checkoutProducts[productIndex].quantity > 1) {
+      checkoutProducts[productIndex].quantity--;
+      updateCheckoutProductCount();
+      updateQuantityField();
+      displayCheckoutProducts();
+    }
+  }
+}
 
+function removeFromCheckout(productId) {
+  const productIndex = checkoutProducts.findIndex(
+    (product) => product.product_id === productId
+  );
+  if (productIndex !== -1) {
+    checkoutProducts.splice(productIndex, 1);
+    updateCheckoutProductCount();
+    updateQuantityField();
+    displayCheckoutProducts();
+  }
+}
+
+
+
+
+
+
+// Send confiremed bill code starts here
+
+function sendConfirmedBill() {
+  const fullName = document.getElementById("full_name").value;
+  const whatsAppNumber = document.getElementById("whatsapp_number").value;
+
+  const productsToSend = checkoutProducts.map(product => {
+    const totalAmount = product.quantity * product.product_price;
+    return {
+      product_id: product.product_id,
+      pcode: product.pcode,
+      product_tittle: product.product_tittle,
+      product_color1: product.product_color1,
+      quantity: product.quantity,
+      totalAmount:totalAmount,
+      size: product.product_size
+    };
+  });
+
+  const confirmedBill = {
+    fullName: fullName,
+    whatsAppNumber: whatsAppNumber,
+    products: productsToSend
+  };
+
+  console.log("CONFIREMD BILL DETAILS:",confirmedBill);
+}
+
+// Event listener for Send Confirmed Bill button
+document.getElementById("sendConfirmedBillBtn").addEventListener("click", sendConfirmedBill);
+
+// Send confirmed bill code ends here
+
+
+
+
+
+// Event listener to execute the function when the modal is shown
+document
+  .getElementById("billingModal")
+  .addEventListener("shown.bs.modal", function () {
+    updateQuantityField(); 
+    displayCheckoutProducts();
+  });
 
 function displayProducts(products) {
   products_section.innerHTML = "";
@@ -130,7 +235,7 @@ function displayProducts(products) {
     products_html +=
       "<img src='" +
       product.product_image1 +
-      "' alt='img-blur-shadow' class='img-fluid fixed-size-image border-radius-xl p-1'>"; // Product image here
+      "' alt='img-blur-shadow' class='img-fluid fixed-size-image border-radius-xl p-1'>"; 
     products_html += "</a>";
     products_html += "</div>";
     products_html += "<div class='card-body px-1 pb-0'>";
@@ -138,12 +243,12 @@ function displayProducts(products) {
       "<p class='text-gradient text-dark mb-2 text-sm'>" +
       product.category +
       "</p>";
-    products_html += "<a href='javascript:;'>"; // Opening <a> tag
-    products_html += "<h5>" + product.product_tittle + "</h5>"; // Product title here
-    products_html += "</a>"; // Closing <a> tag
-    products_html += "<h5>" + product.product_price + "</h5>"; // Product price here
+    products_html += "<a href='javascript:;'>";
+    products_html += "<h5>" + product.product_tittle + "</h5>";
+    products_html += "</a>";
+    products_html += "<h5>" + product.product_price + "</h5>"; 
     products_html +=
-      "<p class='mb-4 text-sm'>" + product.product_discription + "</p>"; //Product description here
+      "<p class='mb-4 text-sm'>" + product.product_discription + "</p>";
     products_html +=
       "<div class='d-flex align-items-center justify-content-between'>";
     products_html +=
