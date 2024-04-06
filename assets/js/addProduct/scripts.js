@@ -422,30 +422,19 @@ function refreshPage() {
   location.reload(); // Reload the page to reflect the changes
 }
 
-
-
-
-
-
-
-
-
-
-
-
 // Shubham - Sign In functionality starts here
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
   // Your JavaScript code here
-  
-const signInLink = document.getElementById('SignInLink');
-console.log("SIGN IN ",signInLink)
-  const signInModal = new bootstrap.Modal(document.getElementById("signInModalDialog"));
+
+  const signInLink = document.getElementById("SignInLink");
+  console.log("SIGN IN ", signInLink);
+  const signInModal = new bootstrap.Modal(
+    document.getElementById("signInModalDialog")
+  );
 
   // Add click event listener to the sign-in link
-  signInLink.addEventListener('click', function() {
-    console.log("CLICKED")
+  signInLink.addEventListener("click", function () {
+    console.log("CLICKED");
     signInModal.show(); // Show the modal
   });
 });
-
-
