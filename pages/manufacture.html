@@ -966,10 +966,10 @@
                 <div>
                     <h3>${item.product_tittle}</h3>
                     <p class='fs-5'>₹${item.product_price}</p>
-                    <div class='d-flex justify-content-between'>
-                        <button type='button' class='btn btn-outline-primary btn-sm mb-0' onclick='decreaseQuantity(${item.id})'>-</button>
-                        <span class='text-sm'>Quantity: ${item?.quantity || 1}</span>
-                        <button type='button' class='btn btn-outline-primary btn-sm mb-0' onclick='increaseQuantity(${item.id})'>+</button>
+                    <div class='d-flex justify-content-between alignn-items-center gap-2 '>
+                        <button type='button' class='btn btn-outline-primary btn-sm px-3 py-1 fs-4' onclick='decreaseQuantity(${item.id})'>-</button>
+                        <span class='fs-5'>Quantity: ${item?.quantity || 1}</span>
+                        <button type='button' class='btn btn-outline-primary btn-sm px-3 py-1 fs-4' onclick='increaseQuantity(${item.id})'>+</button>
                     </div>
                     <p class='fs-5'>Total: ₹${item.product_price * (item?.quantity || 1)}</p>
                 </div>
@@ -984,10 +984,20 @@
 
     function addToCart(product_id) {
         let product = products.find(product => Number(product.id) === Number(product_id));
-        if (product) {
+        let existingProductIndex = cart.findIndex(item => item.id === product.id);
+
+        if (existingProductIndex !== -1) {
+          if (!cart[existingProductIndex].quantity) {
+            cart[existingProductIndex].quantity = 2
+          } else {
+            cart[existingProductIndex].quantity++;
+          }
+
+        } else {
             cart.push(product);
         }
-        renderCart()
+
+        renderCart();
     }
 
     function increaseQuantity(product_id) {
