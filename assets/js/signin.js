@@ -53,7 +53,6 @@ function handleSignIn() {
           window.location.href = "dashboard.html";
           console.log("Login successful");
           // Perform any necessary action (e.g., redirect)
-          alert("Login successful!");
           emailInput.value = "";
           passwordInput.value = "";
         } else {

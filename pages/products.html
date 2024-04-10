@@ -285,7 +285,7 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link  " href="../pages/sign-up.html">
+          <a class="nav-link  " href="../pages/sign-in.html">
             <div
               class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <svg width="12px" height="20px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg"
@@ -1197,6 +1197,7 @@
 
         } else {
           renderProducts(products); // If input is empty, render all products
+
         }
       });
 
@@ -1228,7 +1229,8 @@
 
         allProducts.forEach((product, index) => {
           // if (product.client_id == clientid)
-          if (product.client_id) {
+          // if (product.client_id) {
+            if(product){
             const carouselId = 'carouselExampleControls' + index;
             // Build the HTML markup for the product
             productHTML += "<div class='col-xl-3 col-md-6 mb-xl-0 mb-4 my-2 r  px-1'>";
