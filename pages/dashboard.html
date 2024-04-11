@@ -19,6 +19,7 @@
   <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
   <!-- CSS Files -->
   <link id="pagestyle" href="../assets/css/soft-ui-dashboard.css?v=1.0.3" rel="stylesheet" />
+
 </head>
 
 <body class="g-sidenav-show  bg-gray-100">
@@ -1044,136 +1045,7 @@
 
 
 
-    document.addEventListener('DOMContentLoaded', function () {
-
-
-      const dbUser = JSON.parse(localStorage.getItem('dbUser'));
-      const cid = dbUser ? dbUser.cid : null;
-      const requestBody = JSON.stringify({ cid });
-
-      const fullName = dbUser ? `${dbUser.first_name} ${dbUser.last_name}` : '';
-      const fullNameElement = document.getElementById('fullName');
-      fullNameElement.textContent = `Hello, ${fullName} !!`;
-
-
-
-
-      // Total Products- starts here
-      function fetchProductCount() {
-
-        if (cid) {
-          fetch('https://minitgo.com/api/total_products.php')
-            .then(response => response.json())
-            .then(data => {
-              const products = data.data.filter(product => product.cid === cid);
-              const totalCount = products.length;
-
-              const totalProductsElement = document.getElementById('totalProductsCount');
-              if (totalProductsElement) {
-                totalProductsElement.textContent = totalCount;
-              }
-            })
-            .catch(error => {
-              console.error('Error fetching product count:', error);
-            });
-        } else {
-          console.error('No client_id found in local storage');
-        }
-      }
-      fetchProductCount();
-
-      // Total Products- ends here
-
-
-
-
-
-
-
-
-      // Total Orders - starts here
-
-      function updateTotalOrders() {
-        const dbUser = JSON.parse(localStorage.getItem('dbUser'));
-        const cid = dbUser.cid;
-
-        const requestBody = JSON.stringify({ cid });
-
-        fetch('https://minitgo.com/api/total_orders.php', {
-          method: 'POST',
-          body: requestBody
-        })
-          .then(response => {
-            if (!response.ok) {
-              throw new Error('Network response was not ok');
-            }
-            return response.json();
-          })
-          .then(data => {
-            console.log("DATA", data);
-            const totalOrders = data.count;
-            console.log("TOTAL ORDERS:", totalOrders);
-
-            const totalOrdersElement = document.getElementById('total_orders');
-            totalOrdersElement.textContent = totalOrders;
-          })
-          .catch(error => {
-            console.error('Error updating total orders:', error);
-            const totalOrdersElement = document.getElementById('total_orders');
-            totalOrdersElement.textContent = 'Error fetching total orders';
-          });
-      }
-      updateTotalOrders();
-
-
-      // Total Orders - ends here
-
-
-
-
-
-
-      // Total Sales - starts here
-
-
-      function updateTotalSale() {
-
-
-        fetch('https://minitgo.com/api/total_sale.php', {
-          method: 'POST',
-          body: requestBody,
-          headers: {
-          }
-        })
-          .then(response => {
-            if (!response.ok) {
-              throw new Error('Network response was not ok');
-            }
-            return response.json(); // Parse response body as JSON
-          })
-          .then(data => {
-            console.log("DATA", data);
-            const totalSales = data.total_amount; // Access total_amount from parsed JSON data
-            console.log("TOTAL SALES:", totalSales);
-            const totalSalesWithRupee = `₹ ${totalSales}`;
-
-            const totalSalesElement = document.getElementById('total_sale');
-            totalSalesElement.textContent = totalSalesWithRupee;
-          })
-          .catch(error => {
-            console.error('Error updating total sales:', error);
-            const totalSalesElement = document.getElementById('total_sale');
-            totalSalesElement.textContent = 'Error fetching total sales';
-          });
-      }
-
-      updateTotalSale();
-
-      // Total Sales - ends here
-
-    });
-
-
+  
 
 
 
@@ -1203,8 +1075,9 @@
 
 
   </script>
+    <script src="../assets/js/dashboard.js"></script>
 
-  <script src="../assets/js/dashboard.js"></script>
+
 
 
 

@@ -19,6 +19,7 @@
   <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
   <!-- CSS Files -->
   <link id="pagestyle" href="../assets/css/soft-ui-dashboard.css?v=1.0.3" rel="stylesheet" />
+
 </head>
 
 <body class="g-sidenav-show  bg-gray-100">
@@ -204,7 +205,7 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link  " href="../pages/sign-up.html">
+          <a class="nav-link  " href="../pages/sign-in.html">
             <div
               class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <svg width="12px" height="20px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg"
@@ -280,7 +281,7 @@
             <li class="nav-item d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-body font-weight-bold px-0">
                 <i class="fa fa-user me-sm-1"></i>
-                <span class="d-sm-inline d-none">Sign In</span>
+                <span class="d-sm-inline d-none" id="userName">User</span>
               </a>
             </li>
             <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
@@ -411,70 +412,7 @@
                   </thead>
                   <tbody>
 
-                    <tr>
-                      <td>
-                        <div class="d-flex px-2 py-1">
-                          <div>
-                            <img src="../assets/img/team-2.jpg" class="avatar avatar-sm me-3" alt="user1">
-                          </div>
-                          <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">Product Name / price</h6>
-                            <p class="text-xs text-secondary mb-0">user name</p>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <p class="text-xs font-weight-bold mb-0">10254</p>
-                        <p class="text-xs text-secondary mb-0">COD</p>
-                      </td>
-                      <td class="align-middle text-center text-sm">
-                        <span class="badge badge-sm bg-gradient-success">Devliverd</span>
-                      </td>
-                      <td class="align-middle text-center">
-                        <span class="text-secondary text-xs font-weight-bold">23/04/18</span>
-                      </td>
-                      <td class="align-middle text-center">
-                        <span class="text-secondary text-xs font-weight-bold">06:00 AM</span>
-                      </td>
-                      <td class="align-middle">
-                        <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip"
-                          data-original-title="Edit user">
-                          Edit
-                        </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="d-flex px-2 py-1">
-                          <div>
-                            <img src="../assets/img/team-2.jpg" class="avatar avatar-sm me-3" alt="user1">
-                          </div>
-                          <div class="d-flex flex-column justify-content-center">
-                            <h6 class="mb-0 text-sm">John Michael</h6>
-                            <p class="text-xs text-secondary mb-0">john@creative-tim.com</p>
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <p class="text-xs font-weight-bold mb-0">Manager</p>
-                        <p class="text-xs text-secondary mb-0">Organization</p>
-                      </td>
-                      <td class="align-middle text-center text-sm">
-                        <span class="badge badge-sm bg-gradient-warning">Returned</span>
-                      </td>
-                      <td class="align-middle text-center">
-                        <span class="text-secondary text-xs font-weight-bold">23/04/18</span>
-                      </td>
-                      <td class="align-middle text-center">
-                        <span class="text-secondary text-xs font-weight-bold">06:00 AM</span>
-                      </td>
-                      <td class="align-middle">
-                        <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip"
-                          data-original-title="Edit user">
-                          Edit
-                        </a>
-                      </td>
-                    </tr>
+                    <!-- Live Orders Goes Here -->
 
                   </tbody>
                 </table>
@@ -520,7 +458,8 @@
           <div class="row align-items-center justify-content-lg-between">
             <div class="col-lg-6 mb-lg-0 mb-4">
               <div class="copyright text-center text-sm text-muted text-lg-start">
-                © <script>
+                ©
+                <script>
                   document.write(new Date().getFullYear())
                 </script>,
                 made with <i class="fa fa-heart"></i> by
@@ -646,106 +585,152 @@
   <script src="../assets/js/soft-ui-dashboard.min.js?v=1.0.3"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
   <script>
-    $(document).ready(function() {
-      const clientid = 1832410;
 
-      function fetchData() {
-        $.ajax({
-          url: `https://minitgo.com/api/fetch_live_orders.php?client_id=${clientid}`,
-          type: 'GET',
-          dataType: 'json',
-          success: function(data) {
-            $('#demoTable tbody').empty(); // Clear existing table rows
-            $.each(data, function(index, order) {
-              var row = $('<tr></tr>');
-              row.append(
-                '<td><div class="d-flex px-2 py-1"><div><img src="../assets/img/team-2.jpg" class="avatar avatar-sm me-3" alt="user1"></div><div class="d-flex flex-column justify-content-center"><h6 class="mb-0 text-sm">' +
-                order.product_name +
-                '</h6><p class="text-xs text-secondary mb-0 badge badge-sm">Qty: ' + order.quantity +
-                ' Colour: ' + order.product_color + '</p></div></div></td>');
-              row.append('<td><p class="text-lg badge badge-sm text-secondary mb-0">₹ ' + order
-                .product_price + '</p></td>');
-              row.append(
-                '<td><p class="text-xs font-weight-bold mb-0 badge text-white bg-gradient-secondary">' +
-                order.order_id + '</p><p class="text-xs badge text-secondary mb-0">' + order
-                .payment_mode + '</p></td>');
-              row.append(
-                '<td class="align-middle text-center text-sm"><span class="badge badge-sm bg-gradient-warning">' +
-                order.product_status + '</span></td>');
-              row.append(
-                '<td class="align-middle text-center"><span class="text-secondary text-xs font-weight-bold">' +
-                order.date + '</span></td>');
-              row.append(
-                '<td class="align-middle text-center"><span class="text-secondary text-xs font-weight-bold">' +
-                order.time + '</span></td>');
-              row.append(
-                '<td class="align-middle"><a href="javascript:;" class="badge badge-sm bg-gradient-danger">Cancel Order</a></td>'
-                );
-              $('#demoTable tbody').append(row);
-            });
-          },
-          error: function(xhr, status, error) {
-            console.error('Error fetching data:', error);
-          },
-          complete: function() {
-            // Call fetchData again after a delay
-            setTimeout(fetchData, 9000); // Adjust the delay as needed
-          }
-        });
-      }
-      // Call fetchData initially
-      fetchData();
-    });
-    // Total orders table
-    $(document).ready(function() {
-      const clientid = 1832410;
+    // SHUBHAM- FetchLiveOrders function starts here
 
-      function fetchtotalData() {
-        $.ajax({
-          url: `http://localhost/minitgo/clientdashboard/api/fetch_total_orders.php?client_id=${clientid}`, // Corrected URL
-          type: 'GET',
-          dataType: 'json', // Specify JSON data type
-          success: function(data) {
-            $('#totalorders tbody').empty(); // Clear existing table rows
-            $.each(data, function(index, order) {
-              var row = $('<tr></tr>');
-              row.append(
-                '<td><div class="d-flex px-2 py-1"><div><img src="../assets/img/team-2.jpg" class="avatar avatar-sm me-3" alt="user1"></div><div class="d-flex flex-column justify-content-center"><h6 class="mb-0 text-sm">' +
-                order.product_name +
-                '</h6><p class="text-xs text-secondary mb-0 badge badge-sm">Qty: ' + order.quantity +
-                ' Colour: ' + order.product_color + '</p></div></div></td>');
-              row.append('<td><p class="text-lg badge badge-sm text-secondary mb-0">₹ ' + order
-                .product_price + '</p></td>');
-              row.append(
-                '<td><p class="text-xs font-weight-bold mb-0 badge text-white bg-gradient-secondary">' +
-                order.order_id + '</p><p class="text-xs badge text-secondary mb-0">' + order
-                .payment_mode + '</p></td>');
-              row.append(
-                '<td class="align-middle text-center text-sm"><span class="badge badge-sm bg-gradient-primary">' +
-                order.product_status + '</span></td>');
-              row.append(
-                '<td class="align-middle text-center"><span class="text-secondary text-xs font-weight-bold">' +
-                order.date + '</span></td>');
-              row.append(
-                '<td class="align-middle text-center"><span class="text-secondary text-xs font-weight-bold">' +
-                order.time + '</span></td>');
-              $('#totalorders tbody').append(row);
-            });
-          },
-          error: function(xhr, status, error) {
-            console.error('Error fetching data:', error);
-          },
-          complete: function() {
-            // Call fetchData again after a delay
-            setTimeout(fetchtotalData, 9000); // Adjust the delay as needed
-          }
-        });
+    $(document).ready(function () {
+
+      const clientDetails = JSON.parse(localStorage.getItem('dbUser'));
+      if (clientDetails && clientDetails.cid) {
+        const cid = clientDetails.cid;
+
+        function fetchLiveOrders() {
+         
+          $.ajax({
+            url: 'https://minitgo.com/api/fetch_live_orders.php',
+            type: 'POST',
+            dataType: 'json',
+            data: JSON.stringify({ cid: cid }),
+            success: function (data) {
+              console.log("LIVE ORDERS:", data)
+              if (data.status == false) {
+                $('#demoTable tbody').empty(); // Clear existing table rows
+                return 0
+              } else {
+                $('#demoTable tbody').empty(); 
+                $.each(data, function (index, order) {
+                  var row = $('<tr></tr>');
+                  row.append(
+                    '<td><div class="d-flex px-2 py-1"><div><img src="../assets/img/team-2.jpg" class="avatar avatar-sm me-3" alt="user1"></div><div class="d-flex flex-column justify-content-center"><h6 class="mb-0 text-sm">' +
+                    order.product_name +
+                    '</h6><p class="text-xs text-secondary mb-0 badge badge-sm">Qty: ' + order.quantity +
+                    ' Colour: ' + (order.product_color ? order.product_color : 'N/A') + '</p></div></div></td>');
+                  row.append('<td><p class="text-lg badge badge-sm text-secondary mb-0">₹ ' + order.product_price + '</p></td>');
+                  row.append(
+                    '<td><p class="text-xs font-weight-bold mb-0 badge text-white bg-gradient-secondary">' +
+                    order.order_id + '</p><p class="text-xs badge text-secondary mb-0">' + order.payment_mode + '</p></td>');
+                  row.append(
+                    '<td class="align-middle text-center text-sm"><span class="badge badge-sm bg-gradient-warning">' +
+                    order.product_status + '</span></td>');
+                  row.append(
+                    '<td class="align-middle text-center"><span class="text-secondary text-xs font-weight-bold">' +
+                    order.date + '</span></td>');
+                  row.append(
+                    '<td class="align-middle text-center"><span class="text-secondary text-xs font-weight-bold">' +
+                    order.time + '</span></td>'); 
+                  row.append(
+                    '<td class="align-middle"><a href="javascript:;" class="badge badge-sm bg-gradient-danger">Cancel Order</a></td>'
+                  );
+                  $('#demoTable tbody').append(row);
+                });
+              }
+            },
+            error: function (xhr, status, error) {
+              console.error('Error fetching data:', error);
+            },
+            complete: function () {
+              setTimeout(fetchLiveOrders, 500); 
+            }
+          });
+        }
+        fetchLiveOrders();
+
       }
-      // Call fetchData initially
-      fetchtotalData();
+      else {
+        console.error('Client details not found in local storage.');
+      }
+
     });
+
+    // FetchLiveOrders function ends here
+
+
+
+
+     // SHUBHAM- FetchTotalOrders starts here
+    $(document).ready(function () {
+
+      const clientDetails = JSON.parse(localStorage.getItem('dbUser'));
+      if (clientDetails && clientDetails.cid) {
+        const cid = clientDetails.cid;
+       
+        function fetchTotalOrders() {
+          $.ajax({
+            url: 'https://minitgo.com/api/fetch_total_orders.php', 
+            type: 'POST',
+            dataType: 'json',
+            data: JSON.stringify({ cid: cid }), 
+            success: function (data) {
+              console.log("TABLES ORDERS:", data)
+              if (data.status == false) {
+                $('#totalorders tbody').empty(); 
+                return 0
+              } else {
+                $('#totalorders tbody').empty(); 
+                $.each(data, function (index, order) {
+                  var row = $('<tr></tr>');
+                  row.append(
+                    '<td><div class="d-flex px-2 py-1"><div><img src="../assets/img/team-2.jpg" class="avatar avatar-sm me-3" alt="user1"></div><div class="d-flex flex-column justify-content-center"><h6 class="mb-0 text-sm">' +
+                    order.product_name +
+                    '</h6><p class="text-xs text-secondary mb-0 badge badge-sm">Qty: ' + order.quantity +
+                    ' Colour: ' + order.product_color + '</p></div></div></td>');
+                  row.append('<td><p class="text-lg badge badge-sm text-secondary mb-0">₹ ' + order
+                    .product_price + '</p></td>');
+                  row.append(
+                    '<td><p class="text-xs font-weight-bold mb-0 badge text-white bg-gradient-secondary">' +
+                    order.order_id + '</p><p class="text-xs badge text-secondary mb-0">' + order
+                      .payment_mode + '</p></td>');
+                  row.append(
+                    '<td class="align-middle text-center text-sm"><span class="badge badge-sm bg-gradient-primary">' +
+                    order.product_status + '</span></td>');
+                  row.append(
+                    '<td class="align-middle text-center"><span class="text-secondary text-xs font-weight-bold">' +
+                    order.date + '</span></td>');
+                  row.append(
+                    '<td class="align-middle text-center"><span class="text-secondary text-xs font-weight-bold">' +
+                    order.time + '</span></td>');
+                  $('#totalorders tbody').append(row);
+                });
+              }
+
+            },
+            error: function (xhr, status, error) {
+              console.error('Error fetching data:', error);
+            },
+            complete: function () {
+              setTimeout(fetchTotalOrders, 500);
+            }
+          });
+
+
+        }
+        fetchTotalOrders();
+
+      }
+      else {
+        console.error('Client details not found in local storage.');
+      }
+    });
+
+    // FetchTotalOrders ends here
+
+
+
   </script>
+  <script src="../assets/js/orders.js"></script>
+
 </body>
 
 </html>
